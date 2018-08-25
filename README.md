@@ -1,4 +1,4 @@
-# react-frame-rate
+# react-frame-rate [![npm](https://img.shields.io/npm/v/react-frame-rate.svg)](https://www.npmjs.com/package/react-frame-rate)
 Create smooth animation in React components with ~60FPS.
 
 ## Usage
