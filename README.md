@@ -10,7 +10,7 @@ or
 ```typescript
 import * as React from "react";
 import { render } from "react-dom";
-import { withReactFrameRated } from "react-frame-rate";
+import { withReactFrameRate } from "react-frame-rate";
 
 type CircleProps = Readonly<{
     deg: number;
@@ -73,7 +73,7 @@ const options = {
     frameRate,
 };
 
-const WithAnimation = withReactAnimationFrame<CircleProps>(options)(Circle);
+const WithAnimation = withReactFrameRate<CircleProps>(options)(Circle);
 
 const App = () => (<WithAnimation  {...initialState}/>);
 
@@ -89,3 +89,7 @@ For efficient animation use frameRate - `60/30/20/15/10/6/5/3/1`.
 ### LICENSE
 
 MIT
+
+### Keywords
+
+`requestAnimatioFrame` `react` `smooth animation`
