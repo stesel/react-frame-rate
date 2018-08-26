@@ -1,6 +1,6 @@
 {
   "name": "react-frame-rate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Create smooth animation in React components with ~60FPS.",
   "author": "Leonid Trofymchuk <stesel23@gmail.com>",
   "license": "MIT",
