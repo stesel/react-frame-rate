@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": "./src",
-    "outDir": "./dist",
+    "outDir": "./lib",
     "module": "commonjs",
     "target": "es5",
     "lib": ["es6", "dom"],
@@ -17,7 +17,9 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strict": true,
+    "declaration": true
   },
   "exclude": [
     "node_modules",

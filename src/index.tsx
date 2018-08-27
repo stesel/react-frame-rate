@@ -14,8 +14,8 @@ export const withReactFrameRate = <UpdateProps extends BaseUpdateProps>(options:
         return class ReactFrameRate extends React.Component<UpdateProps, UpdateProps> {
 
             private static metricsFrameCount = 10;
-            private isReactMounted: boolean;
-            private frameId: number;
+            private isReactMounted = false;
+            private frameId = 0;
             private metricsFrames = 0;
             private metricsFramesTime = Date.now();
             private maxFPS = 0;
