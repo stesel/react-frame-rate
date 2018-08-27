@@ -1,6 +1,6 @@
 {
   "name": "react-frame-rate",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Create smooth animation in React components with ~60FPS.",
   "main": "src/index.tsx",
   "types": "lib/index.d.ts",
@@ -56,6 +56,11 @@
     },
     "testMatch": [
       "**/__tests__/*.(ts|tsx|js)"
+    ],
+    "coveragePathIgnorePatterns": [
+      "test-preprocessor.js",
+      "test-setup.js",
+      "test-shim.js"
     ]
   }
 }

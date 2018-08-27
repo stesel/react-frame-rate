@@ -72,4 +72,57 @@ describe("react-frame-rate", () => {
         expect(updateSpyState).toHaveBeenCalled();
     });
 
+    it("should checkFPS on animation play", () => {
+        const props = {
+            counter: 0,
+            isAnimating: true,
+        };
+        const Animated = withReactFrameRate<TestComponentProps>(options)(TestComponent);
+        const wrapper = shallow(<Animated {...props} />);
+        wrapper.instance().checkFPS();
+        expect(wrapper.instance().metricsFrames).toBeGreaterThan(0);
+    });
+
+    it("should metricsFrames be 1 after gets metricsFrameCount", () => {
+        const props = {
+            counter: 0,
+            isAnimating: true,
+        };
+        const Animated = withReactFrameRate<TestComponentProps>(options)(TestComponent);
+        const wrapper = shallow(<Animated {...props} />);
+        wrapper.instance().checkFPS();
+        for (let i = 0; i < Animated.metricsFrameCount - 1; i++) {
+            wrapper.instance().checkFPS();
+        }
+        expect(wrapper.instance().metricsFrames).toBe(1);
+    });
+
+    it("should metricsFrames not be greater than metricsFrameCount", () => {
+        const props = {
+            counter: 0,
+            isAnimating: true,
+        };
+        const Animated = withReactFrameRate<TestComponentProps>(options)(TestComponent);
+        const wrapper = shallow(<Animated {...props} />);
+        wrapper.instance().checkFPS();
+        for (let i = 0; i < 1000; i++) {
+            wrapper.instance().checkFPS();
+        }
+        expect(wrapper.instance().metricsFrames).not.toBeGreaterThan(Animated.metricsFrameCount);
+    });
+
+    it("should be Infinity for max possible FPS", () => {
+        const props = {
+            counter: 0,
+            isAnimating: true,
+        };
+        const Animated = withReactFrameRate<TestComponentProps>(options)(TestComponent);
+        const wrapper = shallow(<Animated {...props} />);
+
+        for (let i = 0; i < 1000; i++) {
+            wrapper.instance().checkFPS();
+        }
+        expect(wrapper.instance().maxFPS).toBe(Infinity);
+    });
+
 });
