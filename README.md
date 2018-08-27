@@ -90,6 +90,10 @@ For efficient animation use frameRate - `60/30/20/15/10/6/5/3/1`.
 
 `https://codesandbox.io/s/21zko1o25j`
 
+### Demo
+
+`https://github.com/stesel/react-frame-rate-demo`
+
 ### LICENSE
 
 MIT
