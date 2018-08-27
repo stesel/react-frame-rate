@@ -86,6 +86,10 @@ render(<App />, document.getElementById("root"));
 `frameRate` - current frame rate for updateState.
 For efficient animation use frameRate - `60/30/20/15/10/6/5/3/1`.
 
+### Codesandbox
+
+`https://codesandbox.io/s/21zko1o25j`
+
 ### LICENSE
 
 MIT
