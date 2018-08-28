@@ -1,6 +1,6 @@
 {
   "name": "react-frame-rate",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Create smooth animation in React components with ~60FPS.",
   "main": "src/index.tsx",
   "types": "lib/index.d.ts",
@@ -25,7 +25,7 @@
     "react": "^16.4.2"
   },
   "peerDependencies": {
-    "chai": "*"
+    "react": "*"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.13",
