@@ -1,9 +1,12 @@
 {
   "name": "react-frame-rate",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Create smooth animation in React components with ~60FPS.",
   "main": "src/index.tsx",
   "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "author": "Leonid Trofymchuk <stesel23@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/stesel/react-frame-rate#readme",
