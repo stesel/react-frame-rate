@@ -1,6 +1,6 @@
 {
   "name": "react-frame-rate",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Create smooth animation in React components with ~60FPS.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -9,10 +9,16 @@
   ],
   "author": "Leonid Trofymchuk <stesel23@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/stesel/react-frame-rate#readme",
+  "homepage": "https://stesel.github.io/react-frame-rate-demo",
   "bugs": {
     "url": "https://github.com/stesel/react-frame-rate/issues"
   },
+  "keywords": [
+    "requestAnimatioFrame",
+    "react",
+    "smooth",
+    "animation"
+  ],
   "scripts": {
     "build": "rm -rf ./lib && tsc",
     "test": "jest",
