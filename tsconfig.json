@@ -23,7 +23,7 @@
   },
   "exclude": [
     "node_modules",
-    "dist",
+    "lib",
     "webpack.config.js",
     "./src/__tests__/"
   ]
