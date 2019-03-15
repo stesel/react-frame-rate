@@ -1,7 +1,7 @@
 language: node_js
 node_js: 8
 scripts:
-  - npm test
+  - npm run lint && npm run test && npm run build
 
 jobs:
   include:
