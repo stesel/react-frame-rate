@@ -1,7 +1,7 @@
 # react-frame-rate [![Coverage Status](https://coveralls.io/repos/github/stesel/react-frame-rate/badge.svg?branch=master)](https://coveralls.io/github/stesel/react-frame-rate?branch=master) [![Build Status](https://travis-ci.org/stesel/react-frame-rate.svg?branch=master)](https://travis-ci.org/stesel/react-frame-rate) [![npm](https://img.shields.io/npm/v/react-frame-rate.svg)](https://www.npmjs.com/package/react-frame-rate)
 Create smooth animation in React components with ~60FPS.
 <p align="center">
-  <img src="https://github.com/stesel/react-frame-rate/blob/master/demo.gif">
+  <img src="demo.gif">
 </p>
 
 ## Usage
