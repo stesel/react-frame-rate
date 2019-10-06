@@ -10,7 +10,7 @@ export type Options<Params> = Readonly<{
 }>;
 
 export const withReactFrameRate = <UpdateProps extends BaseUpdateProps>(options: Options<UpdateProps>) => {
-    return (Component: React.ComponentType<UpdateProps>): React.ComponentClass<UpdateProps> => {
+    return (Component: React.ComponentType<UpdateProps>): React.ComponentClass<UpdateProps, UpdateProps> => {
         return class ReactFrameRate extends React.Component<UpdateProps, UpdateProps> {
 
             private static metricsFrameCount = 10;
