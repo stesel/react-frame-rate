@@ -11,5 +11,5 @@ export declare const withReactFrameRate: <UpdateProps extends Readonly<{
 }>>(options: Readonly<{
     updateState: (state: UpdateProps) => UpdateProps;
     frameRate: number;
-}>) => (Component: React.ComponentType<UpdateProps>) => React.ComponentClass<UpdateProps, UpdateProps>;
+}>) => (Component: React.ComponentType<UpdateProps>) => React.FunctionComponent<UpdateProps>;
 export default withReactFrameRate;

@@ -5,6 +5,7 @@
  * @copyright 2004-present Facebook. All Rights Reserved.
  */
 global.requestAnimationFrame = function(callback) {
-    setTimeout(callback, 0);
-    return Date.now();
+    const now = Date.now();
+    setTimeout(callback, 1, now);
+    return now;
 };
