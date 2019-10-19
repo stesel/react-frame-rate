@@ -1,5 +1,6 @@
 import * as React from "react";
-import { shallow } from "enzyme";
+import { act } from "react-dom/test-utils";
+import { shallow, mount } from "enzyme";
 import {
     withReactFrameRate,
     BaseUpdateProps,
@@ -42,7 +43,7 @@ describe("react-frame-rate", () => {
         };
         const runAnimationSpy = jest.spyOn(window, "requestAnimationFrame");
         const Animated = withReactFrameRate<TestComponentProps>(options)(TestComponent);
-        shallow(<Animated {...props} />);
+        mount(<Animated {...props} />);
         expect(runAnimationSpy).toHaveBeenCalled();
     });
 
@@ -53,7 +54,7 @@ describe("react-frame-rate", () => {
         };
         const stopAnimationSpy = jest.spyOn(window, "cancelAnimationFrame");
         const Animated = withReactFrameRate<TestComponentProps>(options)(TestComponent);
-        const wrapper = shallow(<Animated {...props} />);
+        const wrapper = mount(<Animated {...props} />);
         wrapper.setProps({
             ...props,
             isAnimating: false,
@@ -62,67 +63,19 @@ describe("react-frame-rate", () => {
     });
 
     it("should update state on animation play", () => {
+        jest.useFakeTimers();
         const props = {
             counter: 0,
             isAnimating: true,
         };
         const updateSpyState = jest.spyOn(options, "updateState");
         const Animated = withReactFrameRate<TestComponentProps>(options)(TestComponent);
-        shallow(<Animated {...props} />);
+        mount(<Animated {...props} />);
+        act(() => {
+            jest.runTimersToTime(1000);
+        });
+        jest.useRealTimers();
         expect(updateSpyState).toHaveBeenCalled();
-    });
-
-    it("should checkFPS on animation play", () => {
-        const props = {
-            counter: 0,
-            isAnimating: true,
-        };
-        const Animated = withReactFrameRate<TestComponentProps>(options)(TestComponent);
-        const wrapper = shallow(<Animated {...props} />);
-        wrapper.instance().checkFPS();
-        expect(wrapper.instance().metricsFrames).toBeGreaterThan(0);
-    });
-
-    it("should metricsFrames be 1 after gets metricsFrameCount", () => {
-        const props = {
-            counter: 0,
-            isAnimating: true,
-        };
-        const Animated = withReactFrameRate<TestComponentProps>(options)(TestComponent);
-        const wrapper = shallow(<Animated {...props} />);
-        wrapper.instance().checkFPS();
-        for (let i = 0; i < Animated.metricsFrameCount - 1; i++) {
-            wrapper.instance().checkFPS();
-        }
-        expect(wrapper.instance().metricsFrames).toBe(1);
-    });
-
-    it("should metricsFrames not be greater than metricsFrameCount", () => {
-        const props = {
-            counter: 0,
-            isAnimating: true,
-        };
-        const Animated = withReactFrameRate<TestComponentProps>(options)(TestComponent);
-        const wrapper = shallow(<Animated {...props} />);
-        wrapper.instance().checkFPS();
-        for (let i = 0; i < 1000; i++) {
-            wrapper.instance().checkFPS();
-        }
-        expect(wrapper.instance().metricsFrames).not.toBeGreaterThan(Animated.metricsFrameCount);
-    });
-
-    it("should be Infinity for max possible FPS", () => {
-        const props = {
-            counter: 0,
-            isAnimating: true,
-        };
-        const Animated = withReactFrameRate<TestComponentProps>(options)(TestComponent);
-        const wrapper = shallow(<Animated {...props} />);
-
-        for (let i = 0; i < 1000; i++) {
-            wrapper.instance().checkFPS();
-        }
-        expect(wrapper.instance().maxFPS).toBe(Infinity);
     });
 
 });

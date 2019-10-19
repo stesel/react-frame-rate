@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FrameRateManager } from "./frameRateManager/FrameRateManager";
 
 export type BaseUpdateProps = Readonly<{
     isAnimating: boolean;
@@ -10,83 +11,50 @@ export type Options<Params> = Readonly<{
 }>;
 
 export const withReactFrameRate = <UpdateProps extends BaseUpdateProps>(options: Options<UpdateProps>) => {
-    return (Component: React.ComponentType<UpdateProps>): React.ComponentClass<UpdateProps, UpdateProps> => {
-        return class ReactFrameRate extends React.Component<UpdateProps, UpdateProps> {
+    return (Component: React.ComponentType<UpdateProps>): React.FC<UpdateProps> => {
+        return (props) => {
+            const {
+                updateState,
+                frameRate,
+            } = options;
 
-            private static metricsFrameCount = 10;
-            private isReactMounted = false;
-            private frameId = 0;
-            private metricsFrames = 0;
-            private metricsFramesTime = Date.now();
-            private maxFPS = 0;
-            private animationFrames = 0;
+            const {
+                isAnimating,
+            } = props;
 
-            constructor(props: UpdateProps) {
-                super(props);
-                this.state = props;
-            }
+            const [updateProps, setUpdateProps] = React.useState<UpdateProps>(props);
 
-            public render() {
-                return <Component {...this.state} />;
-            }
+            const frameRateRef = React.useRef<FrameRateManager>();
+            React.useEffect(() => {
+                frameRateRef.current = new FrameRateManager();
+            },              []);
 
-            public componentDidMount() {
-                this.isReactMounted = true;
-                this.checkAnimation(this.props);
-            }
-
-            public componentWillUnmount() {
-                this.isReactMounted = false;
-                this.checkAnimation(this.props);
-            }
-
-            public componentWillReceiveProps(nextProps: UpdateProps) {
-                this.checkAnimation(nextProps);
-            }
-
-            private checkAnimation = (props: UpdateProps) => {
-                if (this.isReactMounted && props.isAnimating) {
-                    this.playAnimation();
-                } else {
-                    this.stopAnimation();
+            React.useEffect(() => {
+                if (frameRateRef.current) {
+                    frameRateRef.current.updateCallback(() => {
+                        setUpdateProps( state => updateState(state));
+                    });
                 }
-            }
+            },              [updateState]);
 
-            private playAnimation = () => {
-                this.checkFPS();
-                this.update();
-                this.frameId = window.requestAnimationFrame(this.playAnimation);
-            }
-
-            private stopAnimation = () => {
-                if (this.frameId) {
-                    window.cancelAnimationFrame(this.frameId);
+            React.useEffect(() => {
+                if (frameRateRef.current) {
+                    frameRateRef.current.updateFrameRate(frameRate);
                 }
-                this.maxFPS = 0;
-            }
+            },              [frameRate]);
 
-            private checkFPS = () => {
-                if (this.metricsFrames >= ReactFrameRate.metricsFrameCount) {
-                    const now = Date.now();
-                    this.maxFPS = 1000 * ReactFrameRate.metricsFrameCount
-                        / (now - this.metricsFramesTime);
-                    this.metricsFrames = 0;
-                    this.metricsFramesTime = now;
+            React.useEffect(() => {
+                if (frameRateRef.current) {
+                    frameRateRef.current.updateAnimation(isAnimating);
                 }
-                this.metricsFrames++;
-            }
-
-            private update = () => {
-                if (this.maxFPS > options.frameRate) {
-                    this.animationFrames++;
-                    if (this.animationFrames >= Math.round(this.maxFPS / options.frameRate)) {
-                        this.setState(options.updateState(this.state));
-                        this.animationFrames = 0;
+                return () => {
+                    if (frameRateRef.current) {
+                        frameRateRef.current.updateAnimation(false);
                     }
-                } else {
-                    this.setState(options.updateState(this.state));
-                }
-            }
+                };
+            },              [isAnimating]);
+
+            return <Component {...updateProps} />;
         };
     };
 };
