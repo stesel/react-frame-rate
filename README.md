@@ -103,7 +103,7 @@ Please check out the [Contributing guide](CONTRIBUTING.md).
 
 ### LICENSE
 
-MIT
+[MIT License](LICENSE.md)
 
 ### Keywords
 
