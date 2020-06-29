@@ -27,21 +27,21 @@ export const withReactFrameRate = <UpdateProps extends BaseUpdateProps>(options:
             const frameRateRef = React.useRef<FrameRateManager>();
             React.useEffect(() => {
                 frameRateRef.current = new FrameRateManager();
-            },              []);
+            }, []);
 
             React.useEffect(() => {
                 if (frameRateRef.current) {
                     frameRateRef.current.updateCallback(() => {
-                        setUpdateProps( state => updateState(state));
+                        setUpdateProps(state => updateState(state));
                     });
                 }
-            },              [updateState]);
+            }, [updateState]);
 
             React.useEffect(() => {
                 if (frameRateRef.current) {
                     frameRateRef.current.updateFrameRate(frameRate);
                 }
-            },              [frameRate]);
+            }, [frameRate]);
 
             React.useEffect(() => {
                 if (frameRateRef.current) {
@@ -52,7 +52,7 @@ export const withReactFrameRate = <UpdateProps extends BaseUpdateProps>(options:
                         frameRateRef.current.updateAnimation(false);
                     }
                 };
-            },              [isAnimating]);
+            }, [isAnimating]);
 
             return <Component {...updateProps} />;
         };
