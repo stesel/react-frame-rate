@@ -12,11 +12,10 @@ or
 ```typescript
 import * as React from "react";
 import { render } from "react-dom";
-import { withReactFrameRate, BaseUpdateProps } from "react-frame-rate";
+import withReactFrameRate, { BaseUpdateProps } from "../index";
 
 type CircleProps = Readonly<{
     deg: number;
-    isAnimating: boolean;
 }> & BaseUpdateProps;
 
 class Circle extends React.PureComponent<CircleProps> {
@@ -55,31 +54,34 @@ class Circle extends React.PureComponent<CircleProps> {
 }
 
 const frameRate = 60;
+const initialDeg = -30;
 
-const initialState = {
-    deg: 0,
-    isAnimating: true,
-};
+const App = () => {
+    const [isAnimating, setIsAnimating] = React.useState<boolean>(true);
+    const updateState = React.useCallback<(state: CircleProps) => CircleProps>((state: CircleProps) => {
+        const newDeg = state.deg + 6;
+        if (newDeg >= 270) {
+            setIsAnimating(false);
+        }
+        return {
+            ...state,
+            deg: newDeg,
+        };
+    }, []);
 
-const updateState = (state: CircleProps) => {
-    const newDeg = (state.deg + 360 / frameRate) % 360;
-    return {
-        ...state,
-        deg: newDeg,
+    const options = {
+        updateState,
+        frameRate,
     };
+
+    const WithAnimation = React.useMemo(() => withReactFrameRate<CircleProps>(options)(Circle), []);
+
+    return (
+        <WithAnimation deg={initialDeg} isAnimating={isAnimating} />
+    );
 };
 
-
-const options = {
-    updateState,
-    frameRate,
-};
-
-const WithAnimation = withReactFrameRate<CircleProps>(options)(Circle);
-
-const App = () => (<WithAnimation  {...initialState}/>);
-
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById("app"));
 ```
 
 ### Options
