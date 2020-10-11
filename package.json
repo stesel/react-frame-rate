@@ -27,7 +27,7 @@
     "start": "parcel ./src/__example__/index.html",
     "build": "rm -rf ./lib && tsc",
     "test": "jest",
-    "lint": "eslint -c .eslintrc.js --ext .ts,.tsx",
+    "lint": "eslint 'src/**/*.{ts,tsx}' -c .eslintrc.js --ext .ts,.tsx",
     "coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "prepare": "yarn build",
     "prepublishOnly": "yarn test && yarn lint",

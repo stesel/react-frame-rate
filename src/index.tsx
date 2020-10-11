@@ -12,7 +12,7 @@ export type Options<Params> = Readonly<{
 
 export const withReactFrameRate = <UpdateProps extends BaseUpdateProps>(options: Options<UpdateProps>) => {
     return (Component: React.ComponentType<UpdateProps>): React.FC<UpdateProps> => {
-        return (props) => {
+        const FrameRate: React.FC<UpdateProps> = (props) => {
             const {
                 updateState,
                 frameRate,
@@ -56,6 +56,9 @@ export const withReactFrameRate = <UpdateProps extends BaseUpdateProps>(options:
 
             return <Component {...updateProps} />;
         };
+
+        FrameRate.displayName = "FrameRateComponent";
+        return FrameRate;
     };
 };
 
