@@ -36,6 +36,7 @@ export class FrameRateManager {
     private stopAnimation = () => {
         if (this.frameId) {
             window.cancelAnimationFrame(this.frameId);
+            this.frameId = 0;
         }
     }
 
