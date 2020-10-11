@@ -1,4 +1,9 @@
-export declare class FrameRateManager {
+export interface FrameRateManager {
+    updateCallback(callback: () => void): void;
+    updateFrameRate(frameRate: number): void;
+    updateAnimation(isAnimating: boolean): void;
+}
+declare class FrameRateManagerClass implements FrameRateManager {
     private static oneSec;
     private static defaultFrameRate;
     private frameId;
@@ -14,3 +19,5 @@ export declare class FrameRateManager {
     private tick;
     private update;
 }
+export declare function createFrameRateManager(): FrameRateManagerClass;
+export {};

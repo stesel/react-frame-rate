@@ -1,4 +1,4 @@
-import { FrameRateManager } from "../frameRateManager/FrameRateManager";
+import { createFrameRateManager, FrameRateManager } from "../frameRateManager/FrameRateManager";
 
 describe("FrameRateManager", () => {
 
@@ -27,7 +27,7 @@ describe("FrameRateManager", () => {
     beforeEach(() => {
         requestAnimationFrameSpy.mockClear();
         cancelAnimationFrameSpy.mockClear();
-        frameRateManager = new FrameRateManager();
+        frameRateManager = createFrameRateManager();
     });
 
     it("should update callback", () => {

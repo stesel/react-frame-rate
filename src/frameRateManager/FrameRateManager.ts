@@ -1,9 +1,15 @@
-export class FrameRateManager {
+export interface FrameRateManager {
+    updateCallback(callback: () => void): void;
+    updateFrameRate(frameRate: number): void;
+    updateAnimation(isAnimating: boolean): void;
+}
+
+class FrameRateManagerClass implements FrameRateManager {
     private static oneSec = 1000;
     private static defaultFrameRate = 60;
 
     private frameId = 0;
-    private frameDuration = FrameRateManager.oneSec / FrameRateManager.defaultFrameRate;
+    private frameDuration = FrameRateManagerClass.oneSec / FrameRateManagerClass.defaultFrameRate;
     private lastFrameTime = 0;
     private callback: (() => void) | undefined;
 
@@ -12,7 +18,7 @@ export class FrameRateManager {
     }
 
     public updateFrameRate = (frameRate: number) => {
-        this.frameDuration = FrameRateManager.oneSec / frameRate;
+        this.frameDuration = FrameRateManagerClass.oneSec / frameRate;
     }
 
     public updateAnimation = (isAnimating: boolean) => {
@@ -52,4 +58,8 @@ export class FrameRateManager {
             this.lastFrameTime = time;
         }
     }
+}
+
+export function createFrameRateManager() {
+    return new FrameRateManagerClass();
 }
