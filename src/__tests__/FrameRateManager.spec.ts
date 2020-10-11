@@ -18,8 +18,6 @@ describe("FrameRateManager", () => {
 
     beforeAll(() => {
         jest.useFakeTimers();
-        requestAnimationFrameSpy.mockClear();
-        cancelAnimationFrameSpy.mockClear();
     });
 
     afterAll(() => {
@@ -27,6 +25,8 @@ describe("FrameRateManager", () => {
     });
 
     beforeEach(() => {
+        requestAnimationFrameSpy.mockClear();
+        cancelAnimationFrameSpy.mockClear();
         frameRateManager = new FrameRateManager();
     });
 
@@ -42,7 +42,7 @@ describe("FrameRateManager", () => {
     });
 
     it("should update frameRate", () => {
-        const frameRate = 15;
+        const frameRate = 60;
         const callbackSpy = jest.fn();
 
         frameRateManager.updateCallback(callbackSpy);
@@ -55,9 +55,16 @@ describe("FrameRateManager", () => {
     });
 
     it("should start animation", () => {
+        const frameRate = 60;
+        const callbackSpy = jest.fn();
+
+        frameRateManager.updateCallback(callbackSpy);
         frameRateManager.updateAnimation(true);
 
+        jest.runTimersToTime(1000 / frameRate);
+
         expect(requestAnimationFrameSpy).toHaveBeenCalled();
+        expect(callbackSpy).toHaveBeenCalledTimes(1);
     });
 
     it("should stop animation", () => {
@@ -65,6 +72,23 @@ describe("FrameRateManager", () => {
         frameRateManager.updateAnimation(false);
 
         expect(cancelAnimationFrameSpy).toHaveBeenCalled();
+
+        frameRateManager.updateAnimation(false);
+
+        expect(cancelAnimationFrameSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not stop not started animation", () => {
+        const frameRate = 60;
+        const callbackSpy = jest.fn();
+
+        frameRateManager.updateCallback(callbackSpy);
+        frameRateManager.updateAnimation(false);
+
+        jest.runTimersToTime(1000 / frameRate);
+
+        expect(callbackSpy).not.toHaveBeenCalled();
+        expect(cancelAnimationFrameSpy).not.toHaveBeenCalled();
     });
 
 });
