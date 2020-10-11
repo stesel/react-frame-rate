@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FrameRateManager } from "./frameRateManager/FrameRateManager";
+import { createFrameRateManager, FrameRateManager } from "./frameRateManager/FrameRateManager";
 
 export interface BaseUpdateProps {
     readonly isAnimating: boolean;
@@ -22,7 +22,7 @@ export const withReactFrameRate = <UpdateProps extends BaseUpdateProps>(options:
                 isAnimating,
             } = props;
 
-            const frameRateRef = React.useRef<FrameRateManager>(new FrameRateManager());
+            const frameRateRef = React.useRef<FrameRateManager>(createFrameRateManager());
 
             const [updateProps, setUpdateProps] = React.useState<UpdateProps>(props);
 

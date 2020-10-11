@@ -1,6 +1,26 @@
+import type { FrameRateManager } from "../frameRateManager/FrameRateManager";
+
+const updateCallbackMock = jest.fn();
+const updateFrameRateMock = jest.fn();
+const updateAnimationMock = jest.fn();
+
+const createFrameRateManagerMock = jest.fn((): FrameRateManager => ({
+    updateCallback: updateCallbackMock,
+    updateFrameRate: updateFrameRateMock,
+    updateAnimation: updateAnimationMock,
+}));
+
+jest.mock(
+    "../frameRateManager/FrameRateManager", () => ({
+        ...jest.requireActual<
+            typeof import("../frameRateManager/FrameRateManager")
+        >("../frameRateManager/FrameRateManager"),
+        createFrameRateManager: createFrameRateManagerMock,
+    }),
+);
+
 import * as React from "react";
-import { act } from "react-dom/test-utils";
-import { shallow, mount } from "enzyme";
+import { render } from "@testing-library/react";
 import {
     withReactFrameRate,
     BaseUpdateProps,
@@ -8,24 +28,25 @@ import {
 } from "../index";
 
 interface UpdateProps extends BaseUpdateProps {
-    counter: 0;
+    counter: number;
 }
+
+const testId = "testComponent";
 
 class TestComponent extends React.Component<UpdateProps> {
     public render() {
         return (
-            <div className="testComponent" />
+            <div data-testid={testId} >{this.props.counter}</div>
         );
     }
 }
 
 const options: Options<UpdateProps> = {
     updateState: jest.fn((state: UpdateProps): UpdateProps => ({ ...state })),
-    frameRate: 60,
+    frameRate: 1,
 };
 
 describe("react-frame-rate", () => {
-
     beforeEach(() => {
         jest.clearAllMocks();
     });
@@ -38,24 +59,52 @@ describe("react-frame-rate", () => {
 
     it("should render child component with original properties", () => {
         const props: UpdateProps = {
-            counter: 0,
+            counter: 15,
             isAnimating: false,
         };
         const Animated = withReactFrameRate<UpdateProps>(options)(TestComponent);
-        const wrapper = shallow(<Animated {...props} />);
-        expect(wrapper.contains(<TestComponent {...props} />)).toBeTruthy();
+        const { getByTestId, getByText } = render(<Animated {...props} />);
+        expect(createFrameRateManagerMock).toHaveBeenCalledTimes(1);
+        expect(updateCallbackMock).toHaveBeenCalledTimes(1);
+        expect(updateFrameRateMock).toHaveBeenCalledWith(options.frameRate);
+        expect(updateAnimationMock).toHaveBeenCalledWith(props.isAnimating);
+        expect(getByTestId(testId)).toBeDefined();
+        expect(getByText(String(props.counter))).toBeDefined();
     });
 
-    it("should start animation", () => {
+    it("should start animation", async () => {
         const props: UpdateProps = {
             counter: 0,
             isAnimating: true,
         };
-        const runAnimationSpy = jest.spyOn(window, "requestAnimationFrame");
+        const nextProps: UpdateProps = {
+            ...props,
+            counter: props.counter + 1,
+        }
+        updateAnimationMock.mockImplementationOnce((isAnimating: boolean) => {
+            if (isAnimating) {
+                options.updateState(nextProps);
+            }
+        });
         const Animated = withReactFrameRate<UpdateProps>(options)(TestComponent);
-        mount(<Animated {...props} />);
-        expect(runAnimationSpy).toHaveBeenCalled();
-        expect(props.isAnimating).toBe(true);
+        render(<Animated {...props} />);
+        expect(updateAnimationMock).toHaveBeenCalledTimes(1);
+        expect(updateAnimationMock).toHaveBeenCalledWith(props.isAnimating);
+        expect(options.updateState).toHaveBeenCalledWith(nextProps);
+    });
+
+    it("should call update callback", () => {
+        const props: UpdateProps = {
+            counter: 0,
+            isAnimating: false,
+        };
+        updateCallbackMock.mockImplementationOnce((callback: () => void) => {
+            callback();
+        });
+        const Animated = withReactFrameRate<UpdateProps>(options)(TestComponent);
+        render(<Animated {...props} />);
+        expect(updateCallbackMock).toHaveBeenCalledTimes(1);
+        expect(options.updateState).toHaveBeenCalledWith(props);
     });
 
     it("should stop animation", () => {
@@ -63,29 +112,16 @@ describe("react-frame-rate", () => {
             counter: 0,
             isAnimating: true,
         };
-        const stopAnimationSpy = jest.spyOn(window, "cancelAnimationFrame");
         const Animated = withReactFrameRate<UpdateProps>(options)(TestComponent);
-        const wrapper = mount(<Animated {...props} />);
-        wrapper.setProps({
-            ...props,
-            isAnimating: false,
-        });
-        expect(stopAnimationSpy).toHaveBeenCalled();
-    });
+        const { rerender } = render(<Animated {...props} />);
+        expect(updateAnimationMock).toHaveBeenCalledWith(props.isAnimating);
 
-    it("should update state on animation play", () => {
-        jest.useFakeTimers();
-        const props: UpdateProps = {
+        const nextProps: UpdateProps = {
             counter: 0,
-            isAnimating: true,
+            isAnimating: false,
         };
-        const Animated = withReactFrameRate<UpdateProps>(options)(TestComponent);
-        mount(<Animated {...props} />);
-        act(() => {
-            jest.runTimersToTime(1000);
-        });
-        jest.useRealTimers();
-        expect(options.updateState).toHaveBeenCalledWith({ "counter": 0, "isAnimating": true });
+        rerender(<Animated {...nextProps} />);
+        expect(updateAnimationMock).toHaveBeenCalledWith(nextProps.isAnimating);
     });
 
 });

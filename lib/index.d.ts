@@ -1,15 +1,10 @@
 import * as React from "react";
-export declare type BaseUpdateProps = Readonly<{
-    isAnimating: boolean;
-}>;
-export declare type Options<Params> = Readonly<{
-    updateState: (state: Params) => Params;
-    frameRate: number;
-}>;
-export declare const withReactFrameRate: <UpdateProps extends Readonly<{
-    isAnimating: boolean;
-}>>(options: Readonly<{
-    updateState: (state: UpdateProps) => UpdateProps;
-    frameRate: number;
-}>) => (Component: React.ComponentType<UpdateProps>) => React.FunctionComponent<UpdateProps>;
+export interface BaseUpdateProps {
+    readonly isAnimating: boolean;
+}
+export interface Options<Params> {
+    readonly updateState: (state: Params) => Params;
+    readonly frameRate: number;
+}
+export declare const withReactFrameRate: <UpdateProps extends BaseUpdateProps>(options: Options<UpdateProps>) => (Component: React.ComponentType<UpdateProps>) => React.FC<UpdateProps>;
 export default withReactFrameRate;
