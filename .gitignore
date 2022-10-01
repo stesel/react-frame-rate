@@ -3,3 +3,4 @@
 /.cache
 /coverage
 /dist
+/.parcel-cache
