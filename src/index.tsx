@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useFrameRateManager } from "./frameRateManager/useFrameRateManager";
+import  { useFrameRateManager } from "./frameRateManager/useFrameRateManager";
 
 export interface BaseUpdateProps {
     readonly isAnimating: boolean;
@@ -51,4 +51,5 @@ export function withReactFrameRate<UpdateProps extends BaseUpdateProps>(options:
     };
 }
 
+export { useFrameRateManager } from "./frameRateManager/useFrameRateManager";
 export default withReactFrameRate;
