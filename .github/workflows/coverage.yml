@@ -1,17 +1,17 @@
 name: Coverage
 on:
-    pull_request:
-        branches:
-            - master
+  pull_request:
+    branches:
+      - master
 jobs:
-    coverage:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - uses: ArtiomTr/jest-coverage-report-action@v2
-              id: coverage
-              with:
-                  output: report-markdown
-            - uses: marocchino/sticky-pull-request-comment@v2
-              with:
-                  message: ${{ steps.coverage.outputs.report }}
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ArtiomTr/jest-coverage-report-action@v2
+        id: coverage
+        with:
+          output: report-markdown
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: ${{ steps.coverage.outputs.report }}
