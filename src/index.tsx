@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createFrameRateManager, FrameRateManager } from "./frameRateManager/FrameRateManager";
+import { useFrameRateManager } from "./frameRateManager/useFrameRateManager";
 
 export interface BaseUpdateProps {
     readonly isAnimating: boolean;
@@ -10,7 +10,7 @@ export interface Options<Params> {
     readonly frameRate: number;
 }
 
-export const withReactFrameRate = <UpdateProps extends BaseUpdateProps>(options: Options<UpdateProps>) => {
+export function withReactFrameRate<UpdateProps extends BaseUpdateProps>(options: Options<UpdateProps>) {
     return (Component: React.ComponentType<UpdateProps>): React.FC<UpdateProps> => {
         const FrameRate: React.FC<UpdateProps> = (props) => {
             const {
@@ -22,24 +22,24 @@ export const withReactFrameRate = <UpdateProps extends BaseUpdateProps>(options:
                 isAnimating,
             } = props;
 
-            const frameRateRef = React.useRef<FrameRateManager>(createFrameRateManager());
+            const { updateCallback, updateFrameRate, updateAnimation } = useFrameRateManager();
 
             const [updateProps, setUpdateProps] = React.useState<UpdateProps>(props);
 
             React.useEffect(() => {
-                frameRateRef.current.updateCallback(() => {
+                updateCallback(() => {
                     setUpdateProps(state => updateState(state));
                 });
-            }, [updateState]);
+            }, [updateCallback, updateState]);
 
             React.useEffect(() => {
-                frameRateRef.current.updateFrameRate(frameRate);
-            }, [frameRate]);
+                updateFrameRate(frameRate);
+            }, [updateFrameRate, frameRate]);
 
             React.useEffect(() => {
-                frameRateRef.current.updateAnimation(isAnimating);
+                updateAnimation(isAnimating);
                 return () => {
-                    frameRateRef.current.updateAnimation(false);
+                    updateAnimation(false);
                 };
             }, [isAnimating]);
 
@@ -49,6 +49,6 @@ export const withReactFrameRate = <UpdateProps extends BaseUpdateProps>(options:
         FrameRate.displayName = "FrameRateComponent";
         return FrameRate;
     };
-};
+}
 
 export default withReactFrameRate;

@@ -21,12 +21,12 @@ In case of doubt, ask a [owner of this repository](https://github.com/stesel) by
 
 ## How to contribute
 
-1. Make sure you have installed [Yarn](https://yarnpkg.com/en/docs/install)
+1. Make sure you have installed [Node](https://nodejs.org/en/download/)
 2. Fork [repository](https://github.com/stesel/react-frame-rate/fork)
 3. Create a branch, naming it either a feature or bug: `git checkout -b feature/that-new-feature` or `bug/fixing-that-bug`
-4. Run `yarn start` to see your result locally.
-5. Run [Jest](https://jestjs.io/) tests with command `yarn test`. Add new test if its needed.
-6. Run [TSLint](https://palantir.github.io/tslint/) with command `yarn lint`.
+4. Run `npm start` to see your result locally.
+5. Run [Jest](https://jestjs.io/) tests with command `npm run test`. Add new test if its needed.
+6. Run [TSLint](https://palantir.github.io/tslint/) with command `npm run lint`.
 3. Code and commit your changes. Bonus points if you write a [good commit message](https://chris.beams.io/posts/git-commit/): `git commit -m 'Add some feature'`
 4. Push to the branch: `git push origin feature/that-new-feature`
 5. [Create a pull request](https://github.com/stesel/react-frame-rate/pulls) for your branch 🎉
