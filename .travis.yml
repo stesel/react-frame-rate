@@ -1,7 +1,7 @@
 language: node_js
 node_js: node
 scripts:
-  - yarn
+  - npm install
 jobs:
   include:
     - stage: Produce Coverage
@@ -9,13 +9,13 @@ jobs:
     - stage: build
       name: Build Lib
       script:
-        - yarn lint
-        - yarn test
-        - yarn build
+        - npm run lint
+        - npm run test
+        - npm run build
     - stage: deploy
       name: Deploy Lib
       before_deploy:
-        - yarn build
+        - npm run build
       deploy:
         provider: npm
         email: stesel23@gmail.com
