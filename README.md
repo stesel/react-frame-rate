@@ -12,7 +12,7 @@ or
 ```typescript
 import * as React from "react";
 import { render } from "react-dom";
-import withReactFrameRate, { BaseUpdateProps } from "../index";
+import withReactFrameRate, { BaseUpdateProps } from "react-frame-rate";
 
 type CircleProps = Readonly<{
     deg: number;
