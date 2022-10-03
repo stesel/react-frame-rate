@@ -9,94 +9,98 @@ Create smooth animation in React components with ~60FPS.
 or
 `yarn add react-frame-rate`
 
+### ◦ React hook `useFrameRateManager`:
 ```typescript
 import * as React from "react";
-import { render } from "react-dom";
+
+import { useFrameRateManager } from "react-frame-rate";
+
+export function Counter() {
+  const [counter, setCounter] = React.useState(0);
+
+  const {
+    updateCallback,
+    updateFrameRate,
+    updateAnimation
+  } = useFrameRateManager();
+
+  React.useEffect(() => {
+    updateCallback(() => setCounter((value) => value + 1));
+  }, [updateCallback, setCounter]);
+
+  React.useEffect(() => {
+    updateFrameRate(30);
+  }, [updateFrameRate]);
+
+  React.useEffect(() => {
+    updateAnimation(true);
+    return () => {
+      updateAnimation(false);
+    };
+  }, [updateAnimation]);
+
+  return <div>{counter}</div>;
+}
+```
+#### Props:
+- `updateCallback` - set callback which is called on each frame.
+- `updateFrameRate` - set desired frame rate value, optimal values `60/30/20/15/10/6/5/3/1`.
+- `updateAnimation`- set start/stop animation with boolean flag.
+
+### ◦ React HOC `withReactFrameRate`:
+```typescript
+import * as React from "react";
+
 import withReactFrameRate, { BaseUpdateProps } from "react-frame-rate";
 
-type CircleProps = Readonly<{
-    deg: number;
-}> & BaseUpdateProps;
+type Props = Readonly<{
+  counter: number;
+}> &
+  BaseUpdateProps;
 
-class Circle extends React.PureComponent<CircleProps> {
+export function Counter() {
+  const [isAnimating, setIsAnimation] = React.useState(true);
 
-    private static radius = 100;
+  const updateState = React.useCallback<(state: Props) => Props>(
+    (state: Props) => {
+      const newCounter = state.counter + 1;
+      if (newCounter >= 100) {
+        setIsAnimation(false);
+      }
+      return { ...state, counter: newCounter };
+    },
+    [setIsAnimation]
+  );
 
-    public render() {
-        const rad = (this.props.deg - 90) / 180 * Math.PI;
-        return (
-            <svg
-                width="200"
-                height="200"
-                viewBox="0 0 200 200"
-                preserveAspectRatio="none"
-            >
-                <circle
-                    cx={Circle.radius}
-                    cy={Circle.radius}
-                    r="99"
-                    stroke="black"
-                    strokeWidth="1"
-                    fill="yellow"
-                />
-                <line
-                    x1={Circle.radius}
-                    y1={Circle.radius}
-                    x2={Circle.radius + Circle.radius * Math.cos(rad)}
-                    y2={Circle.radius + Circle.radius * Math.sin(rad)}
-                    strokeWidth="1"
-                    stroke="red"
-                />
-            </svg>
-        );
-    }
+  const options = React.useMemo(
+    () => ({
+      updateState,
+      frameRate: 30
+    }),
+    [updateState]
+  );
 
+  const WithAnimation = React.useMemo(
+    () =>
+      withReactFrameRate<Props>(options)((props: Props) => (
+        <>{props.counter}</>
+      )),
+    [options]
+  );
+
+  return <WithAnimation counter={0} isAnimating={isAnimating} />;
 }
-
-const frameRate = 60;
-const initialDeg = -30;
-
-const App = () => {
-    const [isAnimating, setIsAnimating] = React.useState<boolean>(true);
-    const updateState = React.useCallback<(state: CircleProps) => CircleProps>((state: CircleProps) => {
-        const newDeg = state.deg + 6;
-        if (newDeg >= 270) {
-            setIsAnimating(false);
-        }
-        return {
-            ...state,
-            deg: newDeg,
-        };
-    }, []);
-
-    const options = {
-        updateState,
-        frameRate,
-    };
-
-    const WithAnimation = React.useMemo(() => withReactFrameRate<CircleProps>(options)(Circle), []);
-
-    return (
-        <WithAnimation deg={initialDeg} isAnimating={isAnimating} />
-    );
-};
-
-render(<App />, document.getElementById("app"));
 ```
 
-### Options
+#### Options:
 
-`updateState` - refresh state on each frame.
-`frameRate` - current frame rate for updateState.
+- `updateState` - refresh state on each frame.
+- `frameRate` - current frame rate for updateState.
 For efficient animation use frameRate - `60/30/20/15/10/6/5/3/1`.
 
-### Codesandbox
+### [◦ Codesandbox](https://codesandbox.io/s/21zko1o25j)
 
-`https://codesandbox.io/s/21zko1o25j`
-
-### Demo
-
-`https://github.com/stesel/react-frame-rate-demo`
+### [◦ Demo](https://github.com/stesel/react-frame-rate-demo)
 
 ## Contributing
 
