@@ -23,6 +23,7 @@ import * as React from "react";
 import { render } from "@testing-library/react";
 import {
     withReactFrameRate,
+    useFrameRateManager,
     BaseUpdateProps,
     Options,
 } from "../index";
@@ -124,4 +125,7 @@ describe("react-frame-rate", () => {
         expect(updateAnimationMock).toBeCalledWith(nextProps.isAnimating);
     });
 
+    it("should re-export useFrameRateManager", () => {
+        expect(useFrameRateManager).toBeDefined();
+    });
 });
