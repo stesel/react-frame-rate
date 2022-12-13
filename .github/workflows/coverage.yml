@@ -7,14 +7,14 @@ on:
     branches: 
       - master
 jobs:
-  coverage:
+  bump:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ArtiomTr/jest-coverage-report-action@v2
-        id: coverage
+    - name: Check out repository code
+      uses: actions/checkout@v2
+    - name: Coverage
+      run: npm run coverage
+    - name: Generating coverage badges
+      uses: jpb06/jest-badges-action@latest
         with:
-          output: report-markdown
-      - uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          message: ${{ steps.coverage.outputs.report }}
+          branches: master

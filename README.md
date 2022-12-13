@@ -1,4 +1,4 @@
-# react-frame-rate [![Coverage](https://github.com/stesel/react-frame-rate/actions/workflows/coverage.yml/badge.svg)](https://github.com/stesel/react-frame-rate/actions/workflows/coverage.yml) [![Build](https://github.com/stesel/react-frame-rate/actions/workflows/build.yml/badge.svg)](https://github.com/stesel/react-frame-rate/actions/workflows/build.yml) [![npm](https://img.shields.io/npm/v/react-frame-rate.svg)](https://www.npmjs.com/package/react-frame-rate)
+# react-frame-rate [![Coverage](./badges/coverage-jest%20coverage.svg)](https://github.com/stesel/react-frame-rate/actions/workflows/coverage.yml) [![Build](https://github.com/stesel/react-frame-rate/actions/workflows/build.yml/badge.svg)](https://github.com/stesel/react-frame-rate/actions/workflows/build.yml) [![npm](https://img.shields.io/npm/v/react-frame-rate.svg)](https://www.npmjs.com/package/react-frame-rate)
 Create smooth animation in React components with ~60FPS.
 
 ![Demo](https://raw.githubusercontent.com/stesel/react-frame-rate/master/demo.gif)
