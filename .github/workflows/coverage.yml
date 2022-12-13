@@ -12,6 +12,11 @@ jobs:
     steps:
     - name: Check out repository code
       uses: actions/checkout@v2
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: npm ci
     - name: Coverage
       run: npm run coverage
     - name: Generating coverage badges
