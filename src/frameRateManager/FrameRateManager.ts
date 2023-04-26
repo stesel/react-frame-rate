@@ -8,8 +8,13 @@ class FrameRateManagerClass implements FrameRateManager {
     private static oneSec = 1000;
     private static defaultFrameRate = 60;
 
+    private static toFixedFrameDuration(frameRate: number) {
+        const precision = Math.pow(10, 5);
+        return Math.floor((FrameRateManagerClass.oneSec / frameRate) * precision) / precision;
+    }
+
     private frameId = 0;
-    private frameDuration = FrameRateManagerClass.oneSec / FrameRateManagerClass.defaultFrameRate;
+    private frameDuration = FrameRateManagerClass.toFixedFrameDuration(FrameRateManagerClass.defaultFrameRate);
     private lastFrameTime = 0;
     private callback: (() => void) | undefined;
 
@@ -18,7 +23,7 @@ class FrameRateManagerClass implements FrameRateManager {
     }
 
     public updateFrameRate = (frameRate: number) => {
-        this.frameDuration = FrameRateManagerClass.oneSec / frameRate;
+        this.frameDuration = FrameRateManagerClass.toFixedFrameDuration(frameRate);
     }
 
     public updateAnimation = (isAnimating: boolean) => {
