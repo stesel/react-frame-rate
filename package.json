@@ -1,6 +1,6 @@
 {
   "name": "react-frame-rate",
-  "version": "2.1.11",
+  "version": "2.1.12",
   "description": "Create smooth animation in React components with ~60FPS.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
