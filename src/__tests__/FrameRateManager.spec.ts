@@ -1,81 +1,83 @@
-import { createFrameRateManager, FrameRateManager } from "../frameRateManager/FrameRateManager";
+import {
+  createFrameRateManager,
+  FrameRateManager,
+} from "../frameRateManager/FrameRateManager";
 
 describe("FrameRateManager", () => {
-    const defaultFrameDuration = 1000 / 60;
+  const defaultFrameDuration = 1000 / 60;
 
-    let frameRateManager: FrameRateManager;
+  let frameRateManager: FrameRateManager;
 
-    beforeAll(() => {
-        jest.useFakeTimers();
-    });
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
 
-    afterAll(() => {
-        jest.useRealTimers();
-    });
+  afterAll(() => {
+    jest.useRealTimers();
+  });
 
-    beforeEach(() => {
-        frameRateManager = createFrameRateManager();
-    });
+  beforeEach(() => {
+    frameRateManager = createFrameRateManager();
+  });
 
-    it("should update callback", () => {
-        const callbackSpy = jest.fn();
+  it("should update callback", () => {
+    const callbackSpy = jest.fn();
 
-        frameRateManager.updateCallback(callbackSpy);
-        frameRateManager.updateAnimation(true);
+    frameRateManager.updateCallback(callbackSpy);
+    frameRateManager.updateAnimation(true);
 
-        jest.advanceTimersByTime(defaultFrameDuration);
+    jest.advanceTimersByTime(defaultFrameDuration);
 
-        expect(callbackSpy).toBeCalled();
-    });
+    expect(callbackSpy).toBeCalled();
+  });
 
-    it("should update frameRate", () => {
-        const frameRate = 60;
-        const callbackSpy = jest.fn();
+  it("should update frameRate", () => {
+    const frameRate = 60;
+    const callbackSpy = jest.fn();
 
-        frameRateManager.updateCallback(callbackSpy);
-        frameRateManager.updateFrameRate(frameRate);
-        frameRateManager.updateAnimation(true);
+    frameRateManager.updateCallback(callbackSpy);
+    frameRateManager.updateFrameRate(frameRate);
+    frameRateManager.updateAnimation(true);
 
-        jest.advanceTimersByTime(1000 / frameRate);
+    jest.advanceTimersByTime(1000 / frameRate);
 
-        expect(callbackSpy).toBeCalledTimes(1);
-    });
+    expect(callbackSpy).toBeCalledTimes(1);
+  });
 
-    it("should start animation", () => {
-        const frameRate = 60;
-        const callbackSpy = jest.fn();
+  it("should start animation", () => {
+    const frameRate = 60;
+    const callbackSpy = jest.fn();
 
-        frameRateManager.updateCallback(callbackSpy);
-        frameRateManager.updateAnimation(true);
+    frameRateManager.updateCallback(callbackSpy);
+    frameRateManager.updateAnimation(true);
 
-        jest.advanceTimersByTime(1000 / frameRate);
+    jest.advanceTimersByTime(1000 / frameRate);
 
-        expect(callbackSpy).toBeCalledTimes(1);
-    });
+    expect(callbackSpy).toBeCalledTimes(1);
+  });
 
-    it( "should stop animation", () => {
-        const frameRate = 60;
-        const callbackSpy = jest.fn();
+  it("should stop animation", () => {
+    const frameRate = 60;
+    const callbackSpy = jest.fn();
 
-        frameRateManager.updateCallback(callbackSpy);
-        frameRateManager.updateAnimation(true);
-        frameRateManager.updateAnimation( false );
-        
-        jest.advanceTimersByTime(1000 / frameRate);
+    frameRateManager.updateCallback(callbackSpy);
+    frameRateManager.updateAnimation(true);
+    frameRateManager.updateAnimation(false);
 
-        expect(callbackSpy).not.toBeCalled();
-    });
+    jest.advanceTimersByTime(1000 / frameRate);
 
-    it("should not stop not started animation", () => {
-        const frameRate = 60;
-        const callbackSpy = jest.fn();
+    expect(callbackSpy).not.toBeCalled();
+  });
 
-        frameRateManager.updateCallback(callbackSpy);
-        frameRateManager.updateAnimation(false);
+  it("should not stop not started animation", () => {
+    const frameRate = 60;
+    const callbackSpy = jest.fn();
 
-        jest.advanceTimersByTime(1000 / frameRate);
+    frameRateManager.updateCallback(callbackSpy);
+    frameRateManager.updateAnimation(false);
 
-        expect(callbackSpy).not.toBeCalled();
-    });
+    jest.advanceTimersByTime(1000 / frameRate);
 
+    expect(callbackSpy).not.toBeCalled();
+  });
 });
