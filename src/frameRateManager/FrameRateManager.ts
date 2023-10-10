@@ -1,34 +1,27 @@
+import { toFrameDuration } from "./toFrameDuration";
+
 export interface FrameRateManager {
-  updateCallback(callback: () => void): void;
+  updateCallback(callback: (time: number) => void): void;
   updateFrameRate(frameRate: number): void;
   updateAnimation(isAnimating: boolean): void;
 }
 
 class FrameRateManagerClass implements FrameRateManager {
-  private static oneSec = 1000;
   private static defaultFrameRate = 60;
 
-  private static toFixedFrameDuration(frameRate: number) {
-    const precision = Math.pow(10, 5);
-    return (
-      Math.floor((FrameRateManagerClass.oneSec / frameRate) * precision) /
-      precision
-    );
-  }
-
   private frameId = 0;
-  private frameDuration = FrameRateManagerClass.toFixedFrameDuration(
+  private frameDuration = toFrameDuration(
     FrameRateManagerClass.defaultFrameRate
   );
   private lastFrameTime = 0;
-  private callback: (() => void) | undefined;
+  private callback: ((time: number) => void) | undefined;
 
-  public updateCallback = (callback: () => void) => {
+  public updateCallback = (callback: (time: number) => void) => {
     this.callback = callback;
   };
 
   public updateFrameRate = (frameRate: number) => {
-    this.frameDuration = FrameRateManagerClass.toFixedFrameDuration(frameRate);
+    this.frameDuration = toFrameDuration(frameRate);
   };
 
   public updateAnimation = (isAnimating: boolean) => {
@@ -56,15 +49,15 @@ class FrameRateManagerClass implements FrameRateManager {
     }
   };
 
-  private tick = () => {
+  private tick = (time: number) => {
     if (this.callback) {
-      this.callback();
+      this.callback(time);
     }
   };
 
   private update = (time: number) => {
     if (time - this.lastFrameTime >= this.frameDuration) {
-      this.tick();
+      this.tick(time);
       this.lastFrameTime = time;
     }
   };
