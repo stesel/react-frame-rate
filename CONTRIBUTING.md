@@ -38,7 +38,7 @@ Please check [issues](https://github.com/stesel/react-frame-rate/issues) page.
 
 ## Publish new version
 
-New release triggers github action which builds and publish new version of package.
+New release triggers github action which builds and publishes new version of the package.
 
 1. Bump version in `package.json`.
 2. Create new tag named by new version.
