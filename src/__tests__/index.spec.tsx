@@ -63,10 +63,10 @@ describe("react-frame-rate", () => {
     };
     const Animated = withReactFrameRate<UpdateProps>(options)(TestComponent);
     const { getByTestId, getByText } = render(<Animated {...props} />);
-    expect(createFrameRateManagerMock).toBeCalledTimes(1);
-    expect(updateCallbackMock).toBeCalledTimes(1);
-    expect(updateFrameRateMock).toBeCalledWith(options.frameRate);
-    expect(updateAnimationMock).toBeCalledWith(props.isAnimating);
+    expect(createFrameRateManagerMock).toHaveBeenCalledTimes(1);
+    expect(updateCallbackMock).toHaveBeenCalledTimes(1);
+    expect(updateFrameRateMock).toHaveBeenCalledWith(options.frameRate);
+    expect(updateAnimationMock).toHaveBeenCalledWith(props.isAnimating);
     expect(getByTestId(testId)).toBeDefined();
     expect(getByText(String(props.counter))).toBeDefined();
   });
@@ -87,9 +87,9 @@ describe("react-frame-rate", () => {
     });
     const Animated = withReactFrameRate<UpdateProps>(options)(TestComponent);
     render(<Animated {...props} />);
-    expect(updateAnimationMock).toBeCalledTimes(1);
-    expect(updateAnimationMock).toBeCalledWith(props.isAnimating);
-    expect(options.updateState).toBeCalledWith(nextProps);
+    expect(updateAnimationMock).toHaveBeenCalledTimes(1);
+    expect(updateAnimationMock).toHaveBeenCalledWith(props.isAnimating);
+    expect(options.updateState).toHaveBeenCalledWith(nextProps);
   });
 
   it("should call update callback", () => {
@@ -102,8 +102,8 @@ describe("react-frame-rate", () => {
     });
     const Animated = withReactFrameRate<UpdateProps>(options)(TestComponent);
     render(<Animated {...props} />);
-    expect(updateCallbackMock).toBeCalledTimes(1);
-    expect(options.updateState).toBeCalledWith(props);
+    expect(updateCallbackMock).toHaveBeenCalledTimes(1);
+    expect(options.updateState).toHaveBeenCalledWith(props);
   });
 
   it("should stop animation", () => {
@@ -113,14 +113,14 @@ describe("react-frame-rate", () => {
     };
     const Animated = withReactFrameRate<UpdateProps>(options)(TestComponent);
     const { rerender } = render(<Animated {...props} />);
-    expect(updateAnimationMock).toBeCalledWith(props.isAnimating);
+    expect(updateAnimationMock).toHaveBeenCalledWith(props.isAnimating);
 
     const nextProps: UpdateProps = {
       counter: 0,
       isAnimating: false,
     };
     rerender(<Animated {...nextProps} />);
-    expect(updateAnimationMock).toBeCalledWith(nextProps.isAnimating);
+    expect(updateAnimationMock).toHaveBeenCalledWith(nextProps.isAnimating);
   });
 
   it("should re-export useFrameRateManager", () => {
