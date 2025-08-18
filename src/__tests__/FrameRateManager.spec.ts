@@ -59,13 +59,13 @@ describe("FrameRateManager", () => {
 
     jest.advanceTimersByTime(defaultFrameDuration);
 
-    expect(callbackSpy).nthCalledWith(1, defaultFrameDuration);
+    expect(callbackSpy).toHaveBeenNthCalledWith(1, defaultFrameDuration);
 
     nowMock.mockReturnValue(defaultFrameDuration * 2);
 
     jest.advanceTimersByTime(defaultFrameDuration);
 
-    expect(callbackSpy).nthCalledWith(2, defaultFrameDuration * 2);
+    expect(callbackSpy).toHaveBeenNthCalledWith(2, defaultFrameDuration * 2);
   });
 
   it("should update frameRate", () => {
@@ -81,7 +81,7 @@ describe("FrameRateManager", () => {
 
     jest.advanceTimersByTime(duration);
 
-    expect(callbackSpy).toBeCalledTimes(1);
+    expect(callbackSpy).toHaveBeenCalledTimes(1);
   });
 
   it("should start animation", () => {
@@ -92,7 +92,7 @@ describe("FrameRateManager", () => {
 
     jest.advanceTimersByTime(defaultFrameDuration);
 
-    expect(callbackSpy).toBeCalledTimes(1);
+    expect(callbackSpy).toHaveBeenCalledTimes(1);
   });
 
   it("should stop animation", () => {
@@ -104,7 +104,7 @@ describe("FrameRateManager", () => {
 
     jest.advanceTimersByTime(defaultFrameDuration);
 
-    expect(callbackSpy).not.toBeCalled();
+    expect(callbackSpy).not.toHaveBeenCalled();
   });
 
   it("should not stop not started animation", () => {
@@ -115,6 +115,6 @@ describe("FrameRateManager", () => {
 
     jest.advanceTimersByTime(defaultFrameDuration);
 
-    expect(callbackSpy).not.toBeCalled();
+    expect(callbackSpy).not.toHaveBeenCalled();
   });
 });
