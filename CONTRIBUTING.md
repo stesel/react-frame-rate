@@ -42,6 +42,6 @@ New release triggers github action which builds and publish new version of packa
 
 1. Bump version in `package.json`.
 2. Create new tag named by new version.
-3. Draft new release with new created tag.
-4. Add release notes
+3. Draft new release according to new version with new created tag.
+4. Add release notes.
 5. Publish new release.
